@@ -6,11 +6,11 @@ Open Real-Time Communications API
 What is orca.js?
 
 Orca.js complements the work done by the WebRTC community in providing a standard way to support real time communication in HTML5 browsers. WebRTC makes it easier to add real-time communication to web applications, but does little to simplify the signaling required to set up high quality communication sessions. Dealing with end-to-end signaling introduces unnecessary complexity for the application developer. Orca.js provides tools and JavaScript libraries that fill the void left by WebRTC.
-•	It stands for Open Realtime Communications API
-•	It consists of a set of call control APIs that enable web developers to embed signaling for Real-time Communications in their applications
-•	A JavaScript library
-•	A testing infrastructure
-•	A community dedicated to empowering developers with interoperable RTC solutions for their applications
+•	It stands for Open Realtime Communications API.
+•	It consists of a set of call control APIs that enable web developers to embed signaling for Real-time Communications in their applications.
+•	A JavaScript library.
+•	A testing infrastructure.
+•	A community dedicated to empowering developers with interoperable RTC solutions for their applications.
 
 Who should use orca.js?
 
