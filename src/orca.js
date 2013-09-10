@@ -86,8 +86,8 @@
         *        Triggered when an error condition occurs 
         *   "incomingCall" (Arguments: {orca.Call} incoming call object)
         *        Triggered when an incoming communication is received during an active session
-        *   "status" - (Arguments: {SessionStatus} indicates the state that triggered the event)
-        *        Triggered when a change in the session state occurs 
+        *   "connecting" - 
+        *        Triggered when a session is in the process of being established 
         * @event
         * @param {String} event name of the event
         * @param {Function} handler function to be called when event is raised
@@ -234,9 +234,15 @@
         *        Triggered when an error condition occurs 
         *   "stream:add" (Arguments: {orca.ManagedStream} remote media stream)
         *        Triggered when a remote stream is added to the call
-        *   "status" - (Arguments: {CallStatus} Indicates the state that triggered the event)
-        *        Triggered when a change in the call state occurs 
-        *        Examples of changes in call state are: Hold (call is placed on hold), Unhold (call is taken off cold)
+        *   "connecting" - 
+        *        Triggered when a call has initiated an attempt to connect to a remote party 
+        *   "hold" - 
+        *        Triggered when a call is placed on hold
+        *   "unhold" - 
+        *        Triggered when a call is taken off hold
+        *   "rejected" - 
+        *        Triggered when an attempt to connect a call is explicitly rejected by the remote party
+        *   
         * @event
         * @param {String} event name of the event
         * @param {Function} handler function to be called when event is raised
@@ -280,17 +286,6 @@
     * @property {String} NETWORK_ERROR An error has occured 
     * 
     */
-
-    /**
-    *
-    * @summary Possible states of a orca.Call
-    * @typedef CallStatus
-    * @type enum 
-    * @property {String} CONNECTING The call is in the process of connecting to the remote party
-    * @property {String} HOLD The call has been placed on hold
-    * @property {String} UNHOLD The call has been taken out of the "on hold" state
-    * @property {String} REJECTED The call refused by the remote party
-    */
     
     /**
     *
@@ -317,16 +312,6 @@
     * @property {String} AUTHENTICATION_FAILED User credentials are invalid
     * @property {String} NETWORK_ERROR No response recieved within maximum expected time
     * 
-    */
-
-    /**
-    *
-    * @summary Possible states of a orca.Session
-    * @typedef SessionStatus
-    * @type enum 
-    * @property {String} CONNECTED The session has been successfully established
-    * @property {String} CONNECTING The session is in the process of being established
-    * @property {String} DISCONNECTED The session has been torn down
     */
 
     /**
