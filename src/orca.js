@@ -76,54 +76,51 @@
         };
 
         /**
-        * @summary Triggered when the session is connected successfully
-        * (Is this really a status change?)
+        * @summary Adds a listener for a session event
+        * Valid event names are:
+        *   "connected" 
+        *        Triggered when the session is connected successfully
+        *   "disconnected" 
+        *        Triggered when the session is disconnected
+        *   "error" - (Arguments: {SessionError} indicates the error that caused the event)
+        *        Triggered when an error condition occurs 
+        *   "incomingCall" (Arguments: {orca.Call} incoming call object)
+        *        Triggered when an incoming communication is received during an active session
+        *   "status" - (Arguments: {SessionStatus} indicates the state that triggered the event)
+        *        Triggered when a change in the session state occurs 
         * @event
-        * @param {Event} event event data
+        * @param {String} event name of the event
+        * @param {Function} handler function to be called when event is raised
+        * @return {orca.Session} 
         *
         */
-        this.onConnected = function (event) {
+        this.on = function (event, handler) {
         };
-
+        
         /**
-        * @summary Triggered when the session is disconnected
-        * (Is this really a status change?)
+        * @summary Adds a listener for a session event that will be called once
+        * 
         * @event
-        * @param {Event} event event data
+        * @param {String} event name of the event
+        * @param {Function} handler function to be called when event is raised
+        * @return {orca.Session} 
         *
         */
-        this.onDisconnected = function (event) {
+        this.once = function (event, handler) {
+        };
+        
+        /**
+        * @summary Removes a listener for a session event
+        * 
+        * @event
+        * @param {String} event name of the event
+        * @param {Function} handler function to be called when event is raised
+        * @return {orca.Session} 
+        * 
+        */
+        this.off = function (event, handler) {
         };
 
-        /**
-        * @SummaryTriggered when an error condition occurs
-        * Examples of error conditions are: TBD
-        * @event
-        * @param {SessionError} status Indicates the error that caused the event
-        * @param {Event} event event data
-        *
-        */
-        this.onError = function (error, event) {
-        };
-
-        /**
-        * Triggered when an incoming communication is received during an active session
-        * @event
-        * @param {orca.Call} receivedCall incoming call object
-        * @param {Event} event event data
-        */
-        this.onIncoming = function (receivedCall, event) {
-        };
-
-        /**
-        * @summary Triggered when a change in the call state occurs
-        * Examples of changes in call state are: Hold (call is placed on hold), Unhold (call is taken off cold)
-        * @event
-        * @param {SessionStatus} status Indicates the state that triggered the event
-        * @param {Event} event event data
-        */
-        this.onStatus = function (status, event) {
-        };
     }
 
     
@@ -227,55 +224,51 @@
         };
         
         /**
-        * @summary Triggered when a remote stream is added to the call
+        * @summary Adds a listener for a call event
+        * Valid event names are:
+        *   "connected" 
+        *        Triggered when a call is connected
+        *   "disconnected" 
+        *        Triggered when a call is disconnected
+        *   "error" - (Arguments: {CallError} Indicates the error that caused the event)
+        *        Triggered when an error condition occurs 
+        *   "stream:add" (Arguments: {orca.ManagedStream} remote media stream)
+        *        Triggered when a remote stream is added to the call
+        *   "status" - (Arguments: {CallStatus} Indicates the state that triggered the event)
+        *        Triggered when a change in the call state occurs 
+        *        Examples of changes in call state are: Hold (call is placed on hold), Unhold (call is taken off cold)
         * @event
-        * @param {orca.ManagedStream} stream remote media stream
-        * @param {Event} event event data
+        * @param {String} event name of the event
+        * @param {Function} handler function to be called when event is raised
+        * @return {orca.Call} 
         *
         */
-        this.onAddStream = function (stream, event) {
+        this.on = function (event, handler) {
         };
-
+        
         /**
-        * @summary Triggered when a call is connected
+        * @summary Adds a listener for a call event that will be called once
         * 
         * @event
-        * @param {Event} event event data
+        * @param {String} event name of the event
+        * @param {Function} handler function to be called when event is raised
+        * @return {orca.Call} 
         *
         */
-        this.onConnected = function (event) {
+        this.once = function (event, handler) {
         };
-
+        
         /**
-        * @summary Triggered when a call is disconnected
+        * @summary Removes a listener for a call event
         * 
         * @event
-        * @param {Event} event event data
-        *
+        * @param {String} event name of the event
+        * @param {Function} handler function to be called when event is raised
+        * @return {orca.Call} 
+        * 
         */
-        this.onDisconnected = function (event) {
+        this.off = function (event, handler) {
         };
-
-        /**
-        * @summary Triggered when an error condition occurs
-        * Examples of error conditions are: TBD
-        * @event
-        * @param {CallError} status Indicates the error that caused the event
-        * @param {Event} event event data
-        *
-        */
-        this.onError = function (error, event) {
-        };
-
-        /**
-        * Triggered when a change in the session state occurs
-        * @event
-        * @param {CallStatus} status Indicates the state that caused the event
-        * @param {Event} event event data
-        */
-        this.onStatus = function (status, event) {
-        };
-
 
     }
 
