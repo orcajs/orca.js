@@ -69,7 +69,15 @@
         };
 
         /**
-        * @summary Retrieves the current status of this session
+        * @summary Retrieves the current status of this session. Possible statuses are:
+        *   "unconnected" -
+        *        The session has not attempted to connect.
+        *   "connecting" - 
+        *        The session is in the process of being established.
+        *   "connected" 
+        *        The session is connected to the server.
+        *   "disconnected" 
+        *        The session is ended and should no longer be used.
         * @returns String
         */
         this.getStatus = function () {
@@ -217,8 +225,18 @@
         };
 
         /**
-        * Retrieves the current status of this call
-        * @returns {CallStatus}
+        * Retrieves the current status of this call. Possible statuses are:
+        *   "unconnected" -
+        *        The call has not attempted to connect.
+        *   "connecting" -
+        *        The call is attempting to connect to the remote party.
+        *   "connected" -
+        *        The call is connected to the remote party.
+        *   "hold" -
+        *        The call is placed on hold by the remote party.
+        *   "disconnected" -
+        *        The call is ended and should no longer be used.
+        * @returns {String}
         */
         this.getStatus = function () {
         };
