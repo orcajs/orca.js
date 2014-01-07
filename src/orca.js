@@ -86,17 +86,18 @@
         /**
         * @summary Adds a listener for a session event
         * Valid event names are:
-        *   "connected" 
+        *   "connected" -
         *        Triggered when the session is connected successfully
-        *   "disconnected" 
+        *   "disconnected" -
         *        Triggered when the session is disconnected
         *   "error" - (Arguments: {SessionError} indicates the error that caused the event)
-        *        Triggered when an error condition occurs 
-        *   "incomingCall" (Arguments: {orca.Call} incoming call object)
+        *        Triggered when an error condition occurs. If an error causes the session to
+        *        end or fail to connect, then the "error" event will soon be followed by a
+        *        "disconnected" event.
+        *   "incomingCall" - (Arguments: {orca.Call} incoming call object)
         *        Triggered when an incoming communication is received during an active session
         *   "connecting" - 
-        *        Triggered when a session is in the process of being established 
-        * @event
+        *        Triggered when a session is in the process of being established
         * @param {String} event name of the event
         * @param {Function} handler function to be called when event is raised
         * @return {orca.Session} 
@@ -107,8 +108,6 @@
         
         /**
         * @summary Adds a listener for a session event that will be called once
-        * 
-        * @event
         * @param {String} event name of the event
         * @param {Function} handler function to be called when event is raised
         * @return {orca.Session} 
@@ -119,8 +118,6 @@
         
         /**
         * @summary Removes a listener for a session event
-        * 
-        * @event
         * @param {String} event name of the event
         * @param {Function} handler function to be called when event is raised
         * @return {orca.Session} 
@@ -162,7 +159,7 @@
         * is called to either initiate a new call or answer a received call.
         * (NOTE: Possible to accept RTCMediaStream as parameter to this method and
         * create ManagedStream internally)
-        * @param {orca.ManagedStream} stream local media stream 
+        * @param {(orca.ManagedStream|RTCMediaStream)} stream local media stream 
         */
         this.addStream = function (stream) {
         };
@@ -244,13 +241,15 @@
         /**
         * @summary Adds a listener for a call event
         * Valid event names are:
-        *   "connected" 
+        *   "connected" -
         *        Triggered when a call is connected
-        *   "disconnected" 
+        *   "disconnected" -
         *        Triggered when a call is disconnected
         *   "error" - (Arguments: {CallError} Indicates the error that caused the event)
-        *        Triggered when an error condition occurs 
-        *   "stream:add" (Arguments: {orca.ManagedStream} remote media stream)
+        *        Triggered when an error condition occurs. If an error causes the call to
+        *        end or fail to connect, then the "error" event will soon be followed by a 
+        *        "disconnected" event.
+        *   "stream:add" - (Arguments: {orca.ManagedStream} remote media stream)
         *        Triggered when a remote stream is added to the call
         *   "connecting" - 
         *        Triggered when a call has initiated an attempt to connect to a remote party 
@@ -259,9 +258,9 @@
         *   "unhold" - 
         *        Triggered when a call is taken off hold
         *   "rejected" - 
-        *        Triggered when an attempt to connect a call is explicitly rejected by the remote party
-        *   
-        * @event
+        *        Triggered when an attempt to connect a call is explicitly rejected by the
+        *        remote party. This results in the call failing to connect, but it will not
+        *        be accompanied by a "disconnected" event.
         * @param {String} event name of the event
         * @param {Function} handler function to be called when event is raised
         * @return {orca.Call} 
@@ -272,8 +271,6 @@
         
         /**
         * @summary Adds a listener for a call event that will be called once
-        * 
-        * @event
         * @param {String} event name of the event
         * @param {Function} handler function to be called when event is raised
         * @return {orca.Call} 
@@ -284,8 +281,6 @@
         
         /**
         * @summary Removes a listener for a call event
-        * 
-        * @event
         * @param {String} event name of the event
         * @param {Function} handler function to be called when event is raised
         * @return {orca.Call} 
@@ -300,10 +295,14 @@
     *
     * @summary Possible errors associated with a orca.Call
     * @typedef CallError
-    * @type enum 
-    * @property {String} NETWORK_ERROR An error has occured 
+    * @type enum
+    * @memberOf orca
+    * @property {String} NETWORK_ERROR An error has occured
     * 
     */
+    var CallError = {
+        NETWORK_ERROR: 'NETWORK_ERROR'
+    };
     
     /**
     *
@@ -326,11 +325,16 @@
     *
     * @summary Possible errors associated with a orca.Session
     * @typedef SessionError
-    * @type enum 
+    * @type enum
+    * @memberOf orca
     * @property {String} AUTHENTICATION_FAILED User credentials are invalid
     * @property {String} NETWORK_ERROR No response recieved within maximum expected time
     * 
     */
+    var SessionError = {
+        AUTHENTICATION_FAILED: 'AUTHENTICATION_FAILED',
+        NETWORK_ERROR: 'NETWORK_ERROR'
+    };
 
     /**
     *
@@ -371,8 +375,10 @@
 
     };
 
+    orca.SessionError = SessionError;
+    orca.CallError = CallError
+
     this.orca = orca;
-    this.Session = Session;
 
 })();
 
