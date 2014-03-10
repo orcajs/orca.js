@@ -241,10 +241,13 @@
         * Transfer of the call to another user. The target user will receive an incoming call to connect with the transferee.
         * @param {string} target The user identifier to whom the call will be transferred.
         * @param {boolean} isAttended Preference for the type of transfer, true for attended, false for
-        * unattended. Defaults to false.
+        * unattended. Defaults to false. If one type of transfer is unavailable, then fall back to the other.
+        * @param {boolean} isTargetProtected Whether to hide the target's identity from the transferee,
+        * true to protect identity, false to expose identity. Defaults to false. If set to true but target
+        * protection is unavailable, then the function will return false and no transfer attempt will be made.
         * @returns {boolean} True if it is possible to initiate a transfer at this time, false otherwise.
         */
-        this.transfer = function (target, isAttended) {
+        this.transfer = function (target, isAttended, isTargetProtected) {
         };
 
         /**
