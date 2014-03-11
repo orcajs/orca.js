@@ -219,22 +219,22 @@
         * Mute participants on a call.
         * @param {string} mediatype Comma separated list of media stream types to mute.
         * Defaults to "audio,video".
-        * @param {string|string[]} target One or more user identifiers of the participants
+        * @param {string|string[]} targets One or more user identifiers of the participants
         * to mute. Defaults to all participants.
         * @returns {boolean} True if mute is possible at this time, otherwise false.
         */
-        this.muteParticipants = function (mediatype, target) {
+        this.muteParticipants = function (mediatype, targets) {
         };
 
         /**
         * Unmute participants on a call.
         * @param {string} mediatype Comma separated list of media stream types to unmute.
         * Defaults to "audio,video".
-        * @param {string|string[]} target One or more user identifiers of the participants
+        * @param {string|string[]} targets One or more user identifiers of the participants
         * to unmute. Defaults to all participants.
         * @returns {boolean} True if unmute is possible at this time, otherwise false.
         */
-        this.unmuteParticipants = function (mediatype, target) {
+        this.unmuteParticipants = function (mediatype, targets) {
         };
 
         /**
