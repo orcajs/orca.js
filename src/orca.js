@@ -449,8 +449,6 @@
     * @type object 
     * @property {String} uri The address of the gateway server
     * @property {Object} provider Reference to implementation providing actual functionality
-    * @property {Object} providerConfig Data structure containing configuration options for the implementation used.
-    * Refer to implementation-specific documentation on what configuration options are available.
     * @property {String} mediatypes The types of media streams that the created session will support; defaults if not provided
     * 
     */
