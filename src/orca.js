@@ -55,8 +55,9 @@
 
         /**
         * Creates a new call instance for communication with the specified recipient
-        * @param {String} to the user identifier of the call recipient
-        * @param {String} mediatypes Comma separated list of media stream types to be used during the call Eg. "audio,video"
+        * @param {string|string[]} to The user identifier of the call recipient.
+        * For a group call, a list of user identifiers may be entered.
+        * @param {string} mediatypes Comma separated list of media stream types to be used during the call Eg. "audio,video"
         */
         this.createCall = function (to, mediatypes) {
         };
@@ -157,12 +158,25 @@
         * Media stream instances are obtained from the browser's getUserMedia() method.
         * Local media streams should be added using this method before the connect method 
         * is called to either initiate a new call or answer a received call.
+        * In addition, it may be used during an active call to change the streams
+        * attached to the call. After streams are changed, invoke {@Link orca.Call#connect}.
         * (NOTE: Possible to accept RTCMediaStream as parameter to this method and
         * create ManagedStream internally)
         * @param {(orca.ManagedStream|RTCMediaStream)} stream local media stream 
         */
         this.addStream = function (stream) {
         };
+
+        /**
+        * Remove a local media stream from the call.
+        * This is used to change the streams attached to a call, either upon initiating a new
+        * call, answering a received call, or during an active call to change the streams
+        * attached.  After streams are changed, invoke {@Link orca.Call#connect}.
+        * @param {(orca.ManagedStream|RTCMediaStream|id)} stream Local media stream to remove, or its associated ID.
+        * @returns {boolean} True if a matching stream is found, false if no such stream is found.
+        */
+        this.removeStream = function (stream) {
+        }
 
         /**
         * Attempts to reach the call recipient and establish a connection
@@ -183,6 +197,84 @@
         *
         */
         this.reject = function () {
+        };
+
+        /**
+        * Add a new participant to a group call.
+        * @param {string} target The user identifier of the participant to add.
+        * @returns {boolean} True if a participant may be added at this time, otherwise false.
+        */
+        this.addParticipant = function (target) {
+        };
+
+        /**
+        * Remove a participant from a group call.
+        * @param {string} target The user identifier of the participant to remove.
+        * @returns {boolean} True if a participant may be removed at this time, otherwise false.
+        */
+        this.removeParticipant = function (target) {
+        };
+
+        /**
+        * Mute participants on a call.
+        * @param {string} mediatype Comma separated list of media stream types to mute.
+        * Defaults to "audio,video".
+        * @param {string|string[]} targets One or more user identifiers of the participants
+        * to mute. Defaults to all participants.
+        * @returns {boolean} True if mute is possible at this time, otherwise false.
+        */
+        this.muteParticipants = function (mediatype, targets) {
+        };
+
+        /**
+        * Unmute participants on a call.
+        * @param {string} mediatype Comma separated list of media stream types to unmute.
+        * Defaults to "audio,video".
+        * @param {string|string[]} targets One or more user identifiers of the participants
+        * to unmute. Defaults to all participants.
+        * @returns {boolean} True if unmute is possible at this time, otherwise false.
+        */
+        this.unmuteParticipants = function (mediatype, targets) {
+        };
+
+        /**
+        * Transfer of the call to another user. The target user will receive an incoming call to connect with the transferee.
+        * @param {string} target The user identifier to whom the call will be transferred.
+        * @param {boolean} isAttended Preference for the type of transfer, true for attended, false for
+        * unattended. Defaults to false. If one type of transfer is unavailable, then fall back to the other.
+        * @param {boolean} isTargetProtected Whether to hide the target's identity from the transferee,
+        * true to protect identity, false to expose identity. Defaults to false. If set to true but target
+        * protection is unavailable, then the function will return false and no transfer attempt will be made.
+        * @returns {boolean} True if it is possible to initiate a transfer at this time, false otherwise.
+        */
+        this.transfer = function (target, isAttended, isTargetProtected) {
+        };
+
+        /**
+        * Send DTMF in an active call.
+        * @param {string} dtmf The tones to send. Allowed tones are letters A through D (case-insensitive),
+        * numbers 0 through 9, pound # and star *. A comma (,) will be treated as a 2 second pause. All other
+        * characters will be ignored. For a string with no allowed tones, or a non-string, nothing will be sent.
+        * @returns {boolean} True if it is possible to send DTMF, even if nothing is sent. False if it is not
+        * possible to send DTMF at this time.
+        */
+        this.sendDTMF = function (dtmf) {
+        };
+
+        /**
+        * Place the call on hold.
+        * @param {string} isSendonly Preference for the type of hold, true for sendonly, false for inactive.
+        * Defaults to false.
+        * @returns {boolean} True if hold is possible at this time, false otherwise.
+        */
+        this.hold = function (isSendonly) {
+        };
+
+        /**
+        * Take the call off of hold.
+        * @returns {boolean} True if unhold is possible at this time, false otherwise.
+        */
+        this.unhold = function () {
         };
 
         /**
@@ -229,8 +321,12 @@
         *        The call is attempting to connect to the remote party.
         *   "connected" -
         *        The call is connected to the remote party.
-        *   "hold" -
+        *   "hold:remote" -
         *        The call is placed on hold by the remote party.
+        *        The local user must wait for the other party to unhold.
+        *   "hold:local" -
+        *        The call is placed on hold by the local party.
+        *        The local user can unhold to resume the call.
         *   "disconnected" -
         *        The call is ended and should no longer be used.
         * @returns {String}
@@ -251,10 +347,20 @@
         *        "disconnected" event.
         *   "stream:add" - (Arguments: {orca.ManagedStream} remote media stream)
         *        Triggered when a remote stream is added to the call
+        *   "stream:remove" - (Arguments: {orca.ManagedStream} remote media stream)
+        *        Triggered when a remote stream is removed from the call
+        *   "participant:add" - (Arguments: {string} identifier of the user that was added)
+        *        Triggered when a user is connected to a multiparty call
+        *   "participant:remove" - (Arguments: {string} identifier of the user that was removed)
+        *        Triggered when a user is disconnected from a multiparty call
         *   "connecting" - 
         *        Triggered when a call has initiated an attempt to connect to a remote party 
-        *   "hold" - 
-        *        Triggered when a call is placed on hold
+        *   "dtmf" - (Arguments: {string} tone received)
+        *        Triggered when a DTMF tone is received.
+        *   "hold:remote" -
+        *        Triggered when the call is placed on hold by the remote party.
+        *   "hold:local" -
+        *        Triggered when the call is placed on hold by the local party.
         *   "unhold" - 
         *        Triggered when a call is taken off hold
         *   "rejected" - 
@@ -381,4 +487,3 @@
     this.orca = orca;
 
 })();
-
