@@ -1,3 +1,9 @@
+/**
+ *@FileOverview This file defines the project Orca Real Time Communication API.
+ *For more information visit {@Link http://www.orcajs.org/}.
+ *
+ */
+
 (function () {
     
     /** 
@@ -39,8 +45,10 @@
     }
 
     /** 
-    *
     * @classdesc Session objects are obtained by calling the createSession method of the global {@Link orca} object
+    * @description The API supports multiple sessions, but particular API implementations may limit
+    * the number of Sessions. Session objects are not considered to be reusable and therefore
+    * the application should create a new session object for each session.
     * @summary Manages communications for a given user identity
     * @constructor
     * @memberOf orca
@@ -86,23 +94,38 @@
 
         /**
         * @summary Adds a listener for a session event
+        * @description
+        * The listener function is called with a single argument which is an {@Link Event} object.
         * Valid event names are:
-        *   "connected" -
-        *        Triggered when the session is connected successfully
-        *   "disconnected" -
-        *        Triggered when the session is disconnected
-        *   "error" - (Arguments: {SessionError} indicates the error that caused the event)
-        *        Triggered when an error condition occurs. If an error causes the session to
+        * <ul>
+        *   <li>"connected" -<br>
+        *        Triggered when the session is connected successfully</li>
+        *   <li>"disconnected" -<br>
+        *        Triggered when the session is disconnected</li>
+        *   <li>"error" -<br>
+        *        Triggered when an error condition occurs.
+        *        The event.error property indicates the error that caused the event. If an error causes the session to
         *        end or fail to connect, then the "error" event will soon be followed by a
-        *        "disconnected" event.
-        *   "incomingCall" - (Arguments: {orca.Call} incoming call object)
-        *        Triggered when an incoming communication is received during an active session
-        *   "connecting" - 
-        *        Triggered when a session is in the process of being established
+        *        "disconnected" event.</li>
+        *   <li>"incomingCall" -<br>
+        *        Triggered when an incoming communication is received during an active session.
+        *        The event.call property of type {@link orca.Call} is the incoming call object.</li>
+        *   <li>"connecting" -<br>
+        *        Triggered when a session is in the process of being established</li>
+        * </ul>
         * @param {String} event name of the event
         * @param {Function} handler function to be called when event is raised
-        * @return {orca.Session} 
+        * @return {orca.Session}
+        * @example
+        * // Define connected event handler
+        * function session_onConnected(event) {
+        *   // Application code for session connected event goes here
+        * }
         *
+        * // Example code to create call
+        * session = orca.createSession(userid, password, sessionConfig);
+        * // Add listener for Connected event
+        * session.on('connected', session_onConnected);
         */
         this.on = function (event, handler) {
         };
@@ -133,6 +156,9 @@
 
     /**
     * @summary Provides access to methods for managing an outgoing or incoming call
+    * @description The API supports multiple calls, but particular API implementations may limit
+    * the number of Calls. Call objects are not considered to be reusable and therefore
+    * the application should create a new call object for each call.
     * @classdesc Calls objects are obtained by calling the createCall method or handling the onIncoming event of a connected {@Link orca.Session} instance
     * @Constructor
     * @memberOf orca
@@ -282,11 +308,11 @@
         * The return value is an array of ManagedStream instances with undefined order
         * When no selector parameter is provided all local and remote streams are included
         * in the returned array.
-        * The keywords *local* and *remote* can be specified to limit the results to local or 
+        * <br>The keywords *local* and *remote* can be specified to limit the results to local or 
         * remote streams respectively.
-        * The *.* (period) symbol is used to prefix a keyword used to limit the results by the
+        * <br>The *.* (period) symbol is used to prefix a keyword used to limit the results by the
         * stream type.  E.g. ".video" would be used to return a list of video streams only.
-        * The *#* (pound) symbol is used to prefix label text used to limit the results to a 
+        * <br>The *#* (pound) symbol is used to prefix label text used to limit the results to a 
         * to a single stream with a label matching the specified text.
         * 
         * @param {string} selector optional query to filter the result list
@@ -336,41 +362,59 @@
         
         /**
         * @summary Adds a listener for a call event
+        * @description
+        * The listener function is called with a single argument which is an {@Link Event} object.
         * Valid event names are:
-        *   "connected" -
-        *        Triggered when a call is connected
-        *   "disconnected" -
-        *        Triggered when a call is disconnected
-        *   "error" - (Arguments: {CallError} Indicates the error that caused the event)
-        *        Triggered when an error condition occurs. If an error causes the call to
+        * <ul>
+        *   <li>"connected" -</br>
+        *        Triggered when a call is connected</li>
+        *   <li>"disconnected" -</br>
+        *        Triggered when a call is disconnected</li>
+        *   <li>"error" -</br>
+        *        Triggered when an error condition occurs.
+        *        The event.error property indicates the error that caused the event. If an error causes the call to
         *        end or fail to connect, then the "error" event will soon be followed by a 
-        *        "disconnected" event.
-        *   "stream:add" - (Arguments: {orca.ManagedStream} remote media stream)
-        *        Triggered when a remote stream is added to the call
-        *   "stream:remove" - (Arguments: {orca.ManagedStream} remote media stream)
-        *        Triggered when a remote stream is removed from the call
-        *   "participant:add" - (Arguments: {string} identifier of the user that was added)
-        *        Triggered when a user is connected to a multiparty call
-        *   "participant:remove" - (Arguments: {string} identifier of the user that was removed)
-        *        Triggered when a user is disconnected from a multiparty call
-        *   "connecting" - 
-        *        Triggered when a call has initiated an attempt to connect to a remote party 
-        *   "dtmf" - (Arguments: {string} tone received)
-        *        Triggered when a DTMF tone is received.
-        *   "hold:remote" -
-        *        Triggered when the call is placed on hold by the remote party.
-        *   "hold:local" -
-        *        Triggered when the call is placed on hold by the local party.
-        *   "unhold" - 
-        *        Triggered when a call is taken off hold
-        *   "rejected" - 
+        *        "disconnected" event.</li>
+        *   <li>"stream:add" -</br>
+        *        Triggered when a remote stream is added to the call. The event.stream property is the remote media stream.
+        *        </li>
+        *   <li>"stream:remove" -</br>
+        *        Triggered when a remote stream is removed from the call. The event.stream property is the remote media stream.</li>
+        *   <li>"participant:add" -</br>
+        *        Triggered when a user is connected to a multiparty call. The event.user
+        *        property indicates the identity of the user that was added.</li>
+        *   <li>"participant:remove" -</br>
+        *        Triggered when a user is disconnected from a multiparty call. The event.user
+        *        property indicates the identity of the user that was removed.</li>
+        *   <li>"connecting" -</br> 
+        *        Triggered when a call has initiated an attempt to connect to a remote party</li> 
+        *   <li>"dtmf" -</br>
+        *        Triggered when a DTMF tone is received. The event.dtmf property indicates
+        *        the tone received.</li>
+        *   <li>"hold:remote" -</br>
+        *        Triggered when the call is placed on hold by the remote party.</li>
+        *   <li>"hold:local" -</br>
+        *        Triggered when the call is placed on hold by the local party.</li>
+        *   <li>"unhold" -</br> 
+        *        Triggered when a call is taken off hold</li>
+        *   <li>"rejected" -</br> 
         *        Triggered when an attempt to connect a call is explicitly rejected by the
         *        remote party. This results in the call failing to connect, but it will not
-        *        be accompanied by a "disconnected" event.
+        *        be accompanied by a "disconnected" event.</li>
+        * </ul>
         * @param {String} event name of the event
         * @param {Function} handler function to be called when event is raised
-        * @return {orca.Call} 
+        * @return {orca.Call}
+        * @example
+        * // Define connected event handler
+        * function call_onConnected(event) {
+        *   // Application code for call connected event goes here
+        * }
         *
+        * // Example code to create call
+        * call = session.createCall(toList, mediatypes);
+        * // Add listener for Connected event
+        * call.on('connected', call_onConnected);
         */
         this.on = function (event, handler) {
         };
@@ -416,6 +460,12 @@
     * @typedef Event
     * @type object 
     * @property {String} name Gets the name/type indicator of the event
+    * @property {String} [error] An {@link orca.CallError} or {@link orca.SessionError}
+    * @property {orca.Call} [call] The object representing an incoming call.
+    * @property {orca.ManagedStream} [stream] The object representing a remote stream.
+    * @property {String} [user] The identity of a user related to the event, for example the
+    * user added to a multiparty call.
+    * @property {String} [dtmf] The value of a DTMF tone received.
     */
     
     /**
@@ -449,7 +499,8 @@
     * @type object 
     * @property {String} uri The address of the gateway server
     * @property {Object} provider Reference to implementation providing actual functionality
-    * @property {String} mediatypes The types of media streams that the created session will support; defaults if not provided
+    * @property {String} mediatypes The types of media streams that the created session will support; defaults if not provided. Recognized media types
+    * include 'audio' and 'video'.
     * 
     */
 
