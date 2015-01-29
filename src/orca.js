@@ -109,7 +109,9 @@
         *        "disconnected" event.</li>
         *   <li>"incomingCall" -<br>
         *        Triggered when an incoming communication is received during an active session.
-        *        The event.call property of type {@link orca.Call} is the incoming call object.</li>
+        *        The event.call property of type {@link orca.Call} is the incoming call object.
+        *        The event.mediatype property, if present, is of type String is a comma separated list of
+        *        media types for the incoming call</li>
         *   <li>"connecting" -<br>
         *        Triggered when a session is in the process of being established</li>
         * </ul>
@@ -142,8 +144,10 @@
         
         /**
         * @summary Removes a listener for a session event
-        * @param {String} event name of the event
-        * @param {Function} handler function to be called when event is raised
+        * @param {String=} event name of the event. If this paremter is omitted
+        * then all handlers for all events are removed.
+        * @param {Function=} handler function to no longer be called when event is raised.
+        * If this paremter is omitted then all handlers for the event are removed.
         * @return {orca.Session} 
         * 
         */
@@ -431,8 +435,10 @@
         
         /**
         * @summary Removes a listener for a call event
-        * @param {String} event name of the event
-        * @param {Function} handler function to be called when event is raised
+        * @param {String=} event name of the event. If this paremter is omitted
+        * then all handlers for all events are removed.
+        * @param {Function=} handler function to no longer be called when event is raised.
+        * If this paremter is omitted then all handlers for the event are removed.
         * @return {orca.Call} 
         * 
         */
@@ -466,6 +472,7 @@
     * @property {String} [user] The identity of a user related to the event, for example the
     * user added to a multiparty call.
     * @property {String} [dtmf] The value of a DTMF tone received.
+    * @property {String} [mediatype] Comma separated list of media types for the incoming call.
     */
     
     /**
